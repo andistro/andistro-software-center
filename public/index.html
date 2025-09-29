@@ -1,85 +1,111 @@
-        </div>
-                <!-- Updates and Uninstall Buttons Section -->
-                <div class="action-buttons-section" style="margin-top: 10px; text-align: right;">
-                    <!-- Updates Button -->
-                    <button class="updates-btn" id="updatesBtn" onclick="window.location.href='update-center.html'" style="background-color: #007bff; color: white; border: none; padding: 8px 16px; margin-right: 10px; border-radius: 4px; cursor: pointer;">
-                        🔄 Atualizações
-                    </button>
-                    
-                    <!-- Uninstall Button -->
-                    <button class="uninstall-btn" id="uninstallBtn" onclick="showUninstallCommand()" style="background-color: #dc3545; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;">
-                        🗑️ Desinstalar
-                    </button>
-                </div>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Andistro Software Center</title>
+    <link rel="icon" type="image/svg+xml" href="assets/ic_store.svg">
+    <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-section">
+                <img src="assets/ic_logo.svg" alt="Andistro Logo" class="logo">
+                <h1>Andistro Software Center</h1>
+            </div>
+            <div class="search-section">
+                <input type="text" id="searchInput" placeholder="Pesquisar aplicativos..." class="search-input">
+                <button id="searchBtn" class="search-btn">Buscar</button>
+            </div>
+            <div class="action-buttons-section">
+                <button id="updatesBtn" class="updates-btn">Atualizações</button>
+                <button id="uninstallBtn" class="uninstall-btn">Desinstalar</button>
             </div>
         </div>
     </header>
 
+    <main>
+        <section class="highlights-section">
+            <h2>Destaques</h2>
+            <div id="highlightsCarousel" class="carousel">
+                <!-- Carrossel será preenchido pelo main.js -->
+            </div>
+        </section>
+
+        <section class="apps-section">
+            <h2>Aplicativos Disponíveis</h2>
+            <div id="appsList" class="apps-grid">
+                <!-- Lista de aplicativos será preenchida pelo main.js -->
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-container">
+            <p>Para desinstalar o Andistro Software Center:</p>
+            <code id="uninstallCommand">curl -fsSL https://raw.githubusercontent.com/andistro/andistro-software-center/main/uninstall.sh | bash</code>
+            <button id="copyUninstallBtn" class="copy-btn">Copiar</button>
+        </div>
+    </footer>
+
+    <!-- Modal para comandos de desinstalação -->
+    <div id="uninstallModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>Comando de Desinstalação</h3>
+            <p>Use o comando abaixo no terminal:</p>
+            <textarea id="uninstallCommandText" readonly>curl -fsSL https://raw.githubusercontent.com/andistro/andistro-software-center/main/uninstall.sh | bash</textarea>
+            <button id="copyModalBtn" class="copy-btn">Copiar para Área de Transferência</button>
+        </div>
+    </div>
+
+    <script src="src/main.js"></script>
     <script>
-        // URI Protocol Handler
-        if (window.location.protocol === 'andistro-software-center:') {
-            const path = window.location.href.replace('andistro-software-center://', '');
-            if (path === 'updates') {
-                window.location.href = 'update-center.html';
-            }
-        }
+        // Handler para URI customizada
+        const path = require('path');
         
-        // Handle custom URI from external calls
-        window.addEventListener('message', function(event) {
-            if (event.data && event.data.uri && event.data.uri.startsWith('andistro-software-center://')) {
-                const path = event.data.uri.replace('andistro-software-center://', '');
-                if (path === 'updates') {
+        window.addEventListener('message', (event) => {
+            if (event.data && event.data.type === 'custom-uri') {
+                const uri = event.data.uri;
+                if (uri === 'andistro-software-center://updates') {
                     window.location.href = 'update-center.html';
                 }
             }
         });
-        
-        // Function to show uninstall command
-        function showUninstallCommand() {
-            const uninstallCmd = 'sudo rm -rf /opt/andistro-software-center && sudo rm /usr/local/bin/andistro-software-center && sudo rm /usr/share/applications/andistro-software-center.desktop';
-            
-            const modal = document.createElement('div');
-            modal.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: flex; align-items: center; justify-content: center; z-index: 1000;';
-            
-            const content = document.createElement('div');
-            content.style.cssText = 'background: white; padding: 20px; border-radius: 8px; max-width: 600px; margin: 20px;';
-            
-            content.innerHTML = `
-                <h3>Comando para Desinstalar</h3>
-                <p>Execute este comando no terminal para desinstalar completamente o Andistro Software Center:</p>
-                <div style="background: #f8f9fa; padding: 10px; border-radius: 4px; margin: 10px 0; font-family: monospace; word-break: break-all;">
-                    ${uninstallCmd}
-                </div>
-                <div style="text-align: right; margin-top: 15px;">
-                    <button onclick="navigator.clipboard.writeText('${uninstallCmd}').then(() => alert('Comando copiado!')); document.body.removeChild(this.closest('div').parentNode)" style="background: #28a745; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; margin-right: 10px;">Copiar</button>
-                    <button onclick="document.body.removeChild(this.closest('div').parentNode)" style="background: #6c757d; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;">Fechar</button>
-                </div>
-            `;
-            
-            modal.appendChild(content);
-            document.body.appendChild(modal);
-            
-            // Close on background click
-            modal.addEventListener('click', function(e) {
-                if (e.target === modal) {
-                    document.body.removeChild(modal);
-                }
-            });
-        }
-    </script>
 
-    <main class="main-content">
-        <div class="container">
-            <!-- Featured Section -->
-            <section class="featured-section">
-                <div class="carousel-container">
-                    <button class="carousel-btn carousel-prev" id="carousel-prev">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </button>
-                    <button class="carousel-btn carousel-next" id="carousel-next">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </button>
+        // Event listeners para botões
+        document.addEventListener('DOMContentLoaded', function() {
+            // Botão de atualizações
+            document.getElementById('updatesBtn').addEventListener('click', function() {
+                window.location.href = 'update-center.html';
+            });
+
+            // Botão de desinstalar
+            document.getElementById('uninstallBtn').addEventListener('click', function() {
+                document.getElementById('uninstallModal').style.display = 'block';
+            });
+
+            // Fechar modal
+            document.querySelector('.close').addEventListener('click', function() {
+                document.getElementById('uninstallModal').style.display = 'none';
+            });
+
+            // Copiar comando de desinstalação
+            document.getElementById('copyModalBtn').addEventListener('click', function() {
+                const textarea = document.getElementById('uninstallCommandText');
+                textarea.select();
+                document.execCommand('copy');
+                alert('Comando copiado para a área de transferência!');
+            });
+
+            document.getElementById('copyUninstallBtn').addEventListener('click', function() {
+                const command = document.getElementById('uninstallCommand').textContent;
+                navigator.clipboard.writeText(command).then(function() {
+                    alert('Comando copiado para a área de transferência!');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

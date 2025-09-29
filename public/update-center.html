@@ -3,167 +3,156 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Central de Atualizações - Andistro Software Center</title>
+    <title data-i18n="updates.title">Central de Atualizações - AndistroOS Software Center</title>
     <link rel="stylesheet" href="estilos.css">
+    <link rel="icon" href="assets/ic_logo.svg" type="image/svg+xml">
 </head>
 <body>
-    <!-- Header com navegação -->
-    <header class="update-header">
+    <header>
         <div class="header-container">
-            <button class="btn-back" onclick="history.back()" aria-label="Voltar">
-                <svg class="icon" viewBox="0 0 24 24">
-                    <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.42-1.41L7.83 13H20v-2z"/>
-                </svg>
-                Voltar
-            </button>
-            
-            <h1 class="page-title">Central de Atualizações</h1>
-            
-            <button class="btn-update-all" id="updateAllBtn" disabled>
-                <svg class="icon" viewBox="0 0 24 24">
-                    <path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46C19.54 15.03 20 13.57 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74C4.46 8.97 4 10.43 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"/>
-                </svg>
-                Atualizar Tudo
-            </button>
-        </div>
-    </header>
-
-    <!-- Container principal -->
-    <main class="updates-container">
-        <!-- Seção de status de carregamento -->
-        <div class="loading-section" id="loadingSection">
-            <div class="loading-spinner">
-                <div class="spinner"></div>
+            <div class="logo-section">
+                <img src="assets/ic_logo.svg" alt="Logo" class="logo">
+                <h1 data-i18n="title">AndistroOS Software Center</h1>
             </div>
-            <p class="loading-text">Verificando atualizações disponíveis...</p>
+            <div class="controls">
+                <button class="language-btn" id="languageBtn" data-i18n="language">PT</button>
+            </div>
         </div>
-
-        <!-- Seção de estatísticas de atualizações -->
+        
+        <nav class="main-nav">
+            <a href="index.html" data-i18n="nav.home">Início</a>
+            <a href="pesquisar.html" data-i18n="nav.search">Pesquisar</a>
+            <a href="update-center.html" class="active" data-i18n="nav.updates">Atualizações</a>
+        </nav>
+    </header>
+    
+    <main class="updates-container">
         <div class="updates-stats" id="updatesStats" style="display: none;">
             <div class="stats-card">
-                <div class="stat-number" id="totalUpdates">0</div>
-                <div class="stat-label">Atualizações Disponíveis</div>
-            </div>
-            <div class="stats-card">
-                <div class="stat-number" id="totalSize">0 MB</div>
-                <div class="stat-label">Tamanho Total</div>
-            </div>
-        </div>
-
-        <!-- Barra de progresso global -->
-        <div class="progress-section" id="progressSection" style="display: none;">
-            <div class="progress-bar">
-                <div class="progress-fill" id="globalProgress" style="width: 0%;"></div>
-            </div>
-            <div class="progress-text">
-                <span id="progressStatus">Preparando...</span>
-                <span id="progressPercent">0%</span>
+                <div class="stat-item">
+                    <div class="stat-number" id="totalApps">0</div>
+                    <div class="stat-label" data-i18n="updates.stats.total">Total de Apps</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="updatesAvailable">0</div>
+                    <div class="stat-label" data-i18n="updates.stats.available">Atualizações Disponíveis</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="upToDate">0</div>
+                    <div class="stat-label" data-i18n="updates.stats.uptodate">Apps Atualizados</div>
+                </div>
             </div>
         </div>
-
-        <!-- Lista de pacotes atualizáveis -->
-        <div class="packages-section" id="packagesSection" style="display: none;">
-            <h2>Pacotes Disponíveis para Atualização</h2>
+        
+        <div class="updates-header">
+            <h2 data-i18n="updates.header">Central de Atualizações</h2>
+            <p data-i18n="updates.description">Mantenha seus aplicativos sempre atualizados com as últimas versões e recursos.</p>
             
-            <!-- Filtros -->
-            <div class="filters-bar">
-                <div class="filter-group">
-                    <label for="categoryFilter">Categoria:</label>
-                    <select id="categoryFilter">
-                        <option value="all">Todas</option>
-                        <option value="system">Sistema</option>
-                        <option value="applications">Aplicações</option>
-                        <option value="libraries">Bibliotecas</option>
-                        <option value="development">Desenvolvimento</option>
-                    </select>
-                </div>
-                
-                <div class="filter-group">
-                    <label for="priorityFilter">Prioridade:</label>
-                    <select id="priorityFilter">
-                        <option value="all">Todas</option>
-                        <option value="critical">Crítica</option>
-                        <option value="high">Alta</option>
-                        <option value="medium">Média</option>
-                        <option value="low">Baixa</option>
-                    </select>
-                </div>
-                
-                <div class="filter-group">
-                    <input type="text" id="searchFilter" placeholder="Buscar pacote...">
-                </div>
-            </div>
-
-            <!-- Lista de pacotes -->
-            <div class="packages-list" id="packagesList">
-                <!-- Os pacotes serão inseridos aqui dinamicamente via JavaScript -->
+            <div class="updates-actions">
+                <button class="btn-primary" id="checkUpdatesBtn" data-i18n="updates.actions.check">Verificar Atualizações</button>
+                <button class="btn-secondary" id="updateAllBtn" style="display: none;" data-i18n="updates.actions.updateall">Atualizar Todos</button>
+                <button class="btn-secondary" id="refreshBtn" data-i18n="updates.actions.refresh">Atualizar Lista</button>
             </div>
         </div>
-
-        <!-- Estado vazio quando não há atualizações -->
-        <div class="empty-state" id="emptyState" style="display: none;">
-            <div class="empty-icon">
-                <svg viewBox="0 0 24 24">
-                    <path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/>
-                </svg>
+        
+        <div class="updates-content">
+            <div class="loading" id="loadingIndicator" style="display: none;">
+                <div class="spinner"></div>
+                <p data-i18n="updates.loading">Verificando atualizações...</p>
             </div>
-            <h3>Sistema Atualizado</h3>
-            <p>Não há atualizações disponíveis no momento. Seu sistema está em dia!</p>
-            <button class="btn-check-again" onclick="checkForUpdates()">Verificar Novamente</button>
+            
+            <div class="no-updates" id="noUpdatesMessage" style="display: none;">
+                <div class="no-updates-icon">✅</div>
+                <h3 data-i18n="updates.noupdates.title">Tudo Atualizado!</h3>
+                <p data-i18n="updates.noupdates.message">Todos os seus aplicativos estão na versão mais recente.</p>
+            </div>
+            
+            <div class="updates-list" id="updatesList">
+                <div class="updates-section">
+                    <h3 data-i18n="updates.sections.available">Atualizações Disponíveis</h3>
+                    <div id="availableUpdates" class="update-items">
+                        <!-- Atualizações disponíveis serão inseridas aqui -->
+                    </div>
+                </div>
+                
+                <div class="updates-section">
+                    <h3 data-i18n="updates.sections.uptodate">Apps Atualizados</h3>
+                    <div id="upToDateApps" class="update-items">
+                        <!-- Apps atualizados serão inseridos aqui -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="update-history" id="updateHistory" style="display: none;">
+            <h3 data-i18n="updates.history.title">Histórico de Atualizações</h3>
+            <div id="historyList" class="history-list">
+                <!-- Histórico será inserido aqui -->
+            </div>
         </div>
     </main>
-
-    <!-- Template para item de pacote -->
-    <template id="packageItemTemplate">
-        <div class="package-item" data-package-id="">
-            <div class="package-checkbox">
-                <input type="checkbox" class="package-select" checked>
+    
+    <!-- Modal de progresso da atualização -->
+    <div id="updateProgressModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 data-i18n="updates.progress.title">Atualizando Aplicativo</h3>
             </div>
-            
-            <div class="package-icon">
-                <img src="" alt="" class="package-img">
-            </div>
-            
-            <div class="package-info">
-                <div class="package-header">
-                    <h3 class="package-name"></h3>
-                    <span class="package-priority"></span>
-                </div>
-                
-                <div class="package-versions">
-                    <span class="version-current">Atual: <strong></strong></span>
-                    <span class="version-arrow">→</span>
-                    <span class="version-new">Nova: <strong></strong></span>
-                </div>
-                
-                <p class="package-description"></p>
-                
-                <div class="package-metadata">
-                    <span class="package-size"></span>
-                    <span class="package-category"></span>
-                    <span class="package-date"></span>
-                </div>
-            </div>
-            
-            <div class="package-actions">
-                <div class="package-progress" style="display: none;">
-                    <div class="progress-bar-small">
-                        <div class="progress-fill-small" style="width: 0%;"></div>
+            <div class="modal-body">
+                <div class="progress-info">
+                    <p id="progressAppName"></p>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
                     </div>
-                    <div class="progress-text-small">0%</div>
+                    <div class="progress-details">
+                        <span id="progressPercentage">0%</span>
+                        <span id="progressStatus" data-i18n="updates.progress.downloading">Baixando...</span>
+                    </div>
                 </div>
-                
-                <button class="btn-update-single" data-action="update">
-                    <svg class="icon" viewBox="0 0 24 24">
-                        <path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46C19.54 15.03 20 13.57 20 12c0-4.42-3.58-8-8-8z"/>
-                    </svg>
-                    Atualizar
-                </button>
             </div>
         </div>
-    </template>
-
-    <!-- Scripts -->
-    <script src="update-center.js"></script>
+    </div>
+    
+    <!-- Modal de confirmação -->
+    <div id="confirmModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 data-i18n="updates.confirm.title">Confirmar Atualização</h3>
+            </div>
+            <div class="modal-body">
+                <p id="confirmMessage" data-i18n="updates.confirm.message">Deseja realmente atualizar este aplicativo?</p>
+                <div class="app-info" id="confirmAppInfo">
+                    <!-- Informações do app serão inseridas aqui -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" id="confirmCancel" data-i18n="updates.confirm.cancel">Cancelar</button>
+                <button class="btn-primary" id="confirmUpdate" data-i18n="updates.confirm.update">Atualizar</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal de erro -->
+    <div id="errorModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 data-i18n="updates.error.title">Erro na Atualização</h3>
+            </div>
+            <div class="modal-body">
+                <p id="errorMessage" data-i18n="updates.error.message">Ocorreu um erro durante a atualização. Tente novamente.</p>
+                <div class="error-details" id="errorDetails" style="display: none;">
+                    <details>
+                        <summary data-i18n="updates.error.details">Detalhes do erro</summary>
+                        <pre id="errorLog"></pre>
+                    </details>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-primary" id="errorClose" data-i18n="updates.error.close">Fechar</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="src/main.js"></script>
 </body>
 </html>

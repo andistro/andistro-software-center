@@ -1,78 +1,101 @@
 {
-  "pesquisar": "Pesquisar",
-  "instalar": "Instalar",
-  "atualizar": "Atualizar",
-  "abrir": "Abrir",
-  "remover": "Remover",
-  "procurando": "Procurando...",
-  "carregando": "Carregando...",
-  "instalando": "Instalando...",
-  "atualizando": "Atualizando...",
-  "removendo": "Removendo...",
-  "configurar": "Configurar",
-  "cancelar": "Cancelar",
-  "confirmar": "Confirmar",
-  "salvar": "Salvar",
-  "voltar": "Voltar",
-  "avançar": "Avançar",
-  "fechar": "Fechar",
-  "ajuda": "Ajuda",
-  "sobre": "Sobre",
-  "versão": "Versão",
-  "descrição": "Descrição",
-  "categoria": "Categoria",
-  "tamanho": "Tamanho",
-  "desenvolvedor": "Desenvolvedor",
-  "licença": "Licença",
-  "página_inicial": "Página Inicial",
-  "centro_software": "Centro de Software",
-  "aplicativos": "Aplicativos",
-  "jogos": "Jogos",
-  "sistema": "Sistema",
-  "desenvolvimento": "Desenvolvimento",
-  "escritório": "Escritório",
-  "multimídia": "Multimídia",
-  "internet": "Internet",
-  "acessórios": "Acessórios",
-  "educação": "Educação",
-  "gráficos": "Gráficos",
-  "som_vídeo": "Som e Vídeo",
-  "preferências": "Preferências",
-  "configurações": "Configurações",
-  "idioma": "Idioma",
-  "tema": "Tema",
-  "notificações": "Notificações",
-  "erro": "Erro",
-  "sucesso": "Sucesso",
-  "aviso": "Aviso",
-  "informação": "Informação",
-  "instalado": "Instalado",
-  "não_instalado": "Não Instalado",
-  "atualização_disponível": "Atualização Disponível",
-  "sem_resultados": "Sem resultados encontrados",
-  "buscar_aplicativos": "Buscar aplicativos...",
-  "filtrar": "Filtrar",
-  "ordenar": "Ordenar",
-  "mais_populares": "Mais Populares",
-  "mais_recentes": "Mais Recentes",
-  "nome_az": "Nome A-Z",
-  "nome_za": "Nome Z-A",
-  "detalhes": "Detalhes",
-  "capturas_tela": "Capturas de Tela",
-  "avaliações": "Avaliações",
-  "comentários": "Comentários",
-  "relatório_erro": "Relatar Erro",
-  "suporte": "Suporte",
-  "doação": "Doação",
-  "compartilhar": "Compartilhar",
-  "favoritos": "Favoritos",
-  "histórico": "Histórico",
-  "downloads": "Downloads",
-  "atualizações": "Atualizações",
-  "centro_atualizações": "Centro de Atualizações",
-  "verificar_atualizações": "Verificar Atualizações",
-  "atualizar_sistema": "Atualizar Sistema",
-  "reiniciar_necessário": "Reinicialização Necessária",
-  "reiniciar_agora": "Reiniciar Agora",
-  "reiniciar_depois": "Reiniciar Depois"
+  "title": "AndistroOS Software Center",
+  "language": "PT",
+  "nav": {
+    "home": "Início",
+    "search": "Pesquisar",
+    "updates": "Atualizações"
+  },
+  "search": {
+    "title": "Pesquisar - AndistroOS Software Center",
+    "header": "Pesquisar Aplicativos",
+    "description": "Encontre os aplicativos que você precisa",
+    "placeholder": "Digite o nome do aplicativo...",
+    "button": "Pesquisar",
+    "filter": {
+      "category": "Categoria:",
+      "all": "Todas as categorias"
+    },
+    "results": {
+      "title": "Resultados",
+      "empty": "Nenhum aplicativo encontrado. Tente pesquisar com outros termos."
+    }
+  },
+  "updates": {
+    "title": "Central de Atualizações - AndistroOS Software Center",
+    "header": "Central de Atualizações",
+    "description": "Mantenha seus aplicativos sempre atualizados com as últimas versões e recursos.",
+    "stats": {
+      "total": "Total de Apps",
+      "available": "Atualizações Disponíveis",
+      "uptodate": "Apps Atualizados"
+    },
+    "actions": {
+      "check": "Verificar Atualizações",
+      "updateall": "Atualizar Todos",
+      "refresh": "Atualizar Lista"
+    },
+    "loading": "Verificando atualizações...",
+    "noupdates": {
+      "title": "Tudo Atualizado!",
+      "message": "Todos os seus aplicativos estão na versão mais recente."
+    },
+    "sections": {
+      "available": "Atualizações Disponíveis",
+      "uptodate": "Apps Atualizados"
+    },
+    "history": {
+      "title": "Histórico de Atualizações"
+    },
+    "progress": {
+      "title": "Atualizando Aplicativo",
+      "downloading": "Baixando..."
+    },
+    "confirm": {
+      "title": "Confirmar Atualização",
+      "message": "Deseja realmente atualizar este aplicativo?",
+      "cancel": "Cancelar",
+      "update": "Atualizar"
+    },
+    "error": {
+      "title": "Erro na Atualização",
+      "message": "Ocorreu um erro durante a atualização. Tente novamente.",
+      "details": "Detalhes do erro",
+      "close": "Fechar"
+    }
+  },
+  "category": {
+    "productivity": "Produtividade",
+    "development": "Desenvolvimento",
+    "media": "Mídia",
+    "games": "Jogos",
+    "internet": "Internet",
+    "system": "Sistema"
+  },
+  "home": {
+    "welcome": "Bem-vindo ao AndistroOS Software Center",
+    "subtitle": "Descubra, instale e gerencie seus aplicativos favoritos",
+    "featured": "Aplicativos em Destaque",
+    "categories": "Categorias"
+  },
+  "app": {
+    "install": "Instalar",
+    "remove": "Remover",
+    "open": "Abrir",
+    "update": "Atualizar",
+    "installing": "Instalando...",
+    "removing": "Removendo...",
+    "updating": "Atualizando...",
+    "installed": "Instalado",
+    "moreInfo": "Mais informações"
+  },
+  "modal": {
+    "close": "Fechar",
+    "confirm": "Confirmar",
+    "cancel": "Cancelar"
+  },
+  "loading": "Carregando...",
+  "error": "Erro ao carregar dados",
+  "noApps": "Nenhum aplicativo encontrado",
+  "tryAgain": "Tentar novamente"
 }
