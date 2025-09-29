@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Central de Atualizações - Andistro Software Center</title>
+    <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+    <!-- Header com navegação -->
+    <header class="update-header">
+        <div class="header-container">
+            <button class="btn-back" onclick="history.back()" aria-label="Voltar">
+                <svg class="icon" viewBox="0 0 24 24">
+                    <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.42-1.41L7.83 13H20v-2z"/>
+                </svg>
+                Voltar
+            </button>
+            
+            <h1 class="page-title">Central de Atualizações</h1>
+            
+            <button class="btn-update-all" id="updateAllBtn" disabled>
+                <svg class="icon" viewBox="0 0 24 24">
+                    <path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46C19.54 15.03 20 13.57 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74C4.46 8.97 4 10.43 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"/>
+                </svg>
+                Atualizar Tudo
+            </button>
+        </div>
+    </header>
+
+    <!-- Container principal -->
+    <main class="updates-container">
+        <!-- Seção de status de carregamento -->
+        <div class="loading-section" id="loadingSection">
+            <div class="loading-spinner">
+                <div class="spinner"></div>
+            </div>
+            <p class="loading-text">Verificando atualizações disponíveis...</p>
+        </div>
+
+        <!-- Seção de estatísticas de atualizações -->
+        <div class="updates-stats" id="updatesStats" style="display: none;">
+            <div class="stats-card">
+                <div class="stat-number" id="totalUpdates">0</div>
+                <div class="stat-label">Atualizações Disponíveis</div>
+            </div>
+            <div class="stats-card">
+                <div class="stat-number" id="totalSize">0 MB</div>
+                <div class="stat-label">Tamanho Total</div>
+            </div>
+        </div>
+
+        <!-- Barra de progresso global -->
+        <div class="progress-section" id="progressSection" style="display: none;">
+            <div class="progress-bar">
+                <div class="progress-fill" id="globalProgress" style="width: 0%;"></div>
+            </div>
+            <div class="progress-text">
+                <span id="progressStatus">Preparando...</span>
+                <span id="progressPercent">0%</span>
+            </div>
+        </div>
+
+        <!-- Lista de pacotes atualizáveis -->
+        <div class="packages-section" id="packagesSection" style="display: none;">
+            <h2>Pacotes Disponíveis para Atualização</h2>
+            
+            <!-- Filtros -->
+            <div class="filters-bar">
+                <div class="filter-group">
+                    <label for="categoryFilter">Categoria:</label>
+                    <select id="categoryFilter">
+                        <option value="all">Todas</option>
+                        <option value="system">Sistema</option>
+                        <option value="applications">Aplicações</option>
+                        <option value="libraries">Bibliotecas</option>
+                        <option value="development">Desenvolvimento</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label for="priorityFilter">Prioridade:</label>
+                    <select id="priorityFilter">
+                        <option value="all">Todas</option>
+                        <option value="critical">Crítica</option>
+                        <option value="high">Alta</option>
+                        <option value="medium">Média</option>
+                        <option value="low">Baixa</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <input type="text" id="searchFilter" placeholder="Buscar pacote...">
+                </div>
+            </div>
+
+            <!-- Lista de pacotes -->
+            <div class="packages-list" id="packagesList">
+                <!-- Os pacotes serão inseridos aqui dinamicamente via JavaScript -->
+            </div>
+        </div>
+
+        <!-- Estado vazio quando não há atualizações -->
+        <div class="empty-state" id="emptyState" style="display: none;">
+            <div class="empty-icon">
+                <svg viewBox="0 0 24 24">
+                    <path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/>
+                </svg>
+            </div>
+            <h3>Sistema Atualizado</h3>
+            <p>Não há atualizações disponíveis no momento. Seu sistema está em dia!</p>
+            <button class="btn-check-again" onclick="checkForUpdates()">Verificar Novamente</button>
+        </div>
+    </main>
+
+    <!-- Template para item de pacote -->
+    <template id="packageItemTemplate">
+        <div class="package-item" data-package-id="">
+            <div class="package-checkbox">
+                <input type="checkbox" class="package-select" checked>
+            </div>
+            
+            <div class="package-icon">
+                <img src="" alt="" class="package-img">
+            </div>
+            
+            <div class="package-info">
+                <div class="package-header">
+                    <h3 class="package-name"></h3>
+                    <span class="package-priority"></span>
+                </div>
+                
+                <div class="package-versions">
+                    <span class="version-current">Atual: <strong></strong></span>
+                    <span class="version-arrow">→</span>
+                    <span class="version-new">Nova: <strong></strong></span>
+                </div>
+                
+                <p class="package-description"></p>
+                
+                <div class="package-metadata">
+                    <span class="package-size"></span>
+                    <span class="package-category"></span>
+                    <span class="package-date"></span>
+                </div>
+            </div>
+            
+            <div class="package-actions">
+                <div class="package-progress" style="display: none;">
+                    <div class="progress-bar-small">
+                        <div class="progress-fill-small" style="width: 0%;"></div>
+                    </div>
+                    <div class="progress-text-small">0%</div>
+                </div>
+                
+                <button class="btn-update-single" data-action="update">
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46C19.54 15.03 20 13.57 20 12c0-4.42-3.58-8-8-8z"/>
+                    </svg>
+                    Atualizar
+                </button>
+            </div>
+        </div>
+    </template>
+
+    <!-- Scripts -->
+    <script src="update-center.js"></script>
+</body>
+</html>

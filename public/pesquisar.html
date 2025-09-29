@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pesquisar Apps - Andistro Software Center</title>
+    <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <div class="header-left">
+                <button id="voltar-btn" class="btn-icon" aria-label="Voltar">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+                    </svg>
+                </button>
+                <h1 class="header-title">Pesquisar Apps</h1>
+            </div>
+            <div class="header-actions">
+                <button class="btn-icon" aria-label="Menu">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content" id="main-content">
+        <!-- Search Section -->
+        <section class="search-section">
+            <div class="search-container">
+                <div class="search-box">
+                    <div class="search-input-wrapper">
+                        <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+                        </svg>
+                        <input 
+                            type="text" 
+                            id="search-input" 
+                            class="search-input" 
+                            placeholder="Buscar aplicativos..."
+                            autocomplete="off"
+                        >
+                        <button id="clear-search" class="btn-clear" aria-label="Limpar pesquisa" style="display: none;">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <button id="search-btn" class="btn-primary">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+                        </svg>
+                        Buscar
+                    </button>
+                </div>
+
+                <!-- Search Filters -->
+                <div class="search-filters">
+                    <div class="filter-group">
+                        <label class="filter-label">Categoria:</label>
+                        <select id="category-filter" class="filter-select">
+                            <option value="">Todas as categorias</option>
+                            <option value="produtividade">Produtividade</option>
+                            <option value="desenvolvimento">Desenvolvimento</option>
+                            <option value="multimidia">Multimídia</option>
+                            <option value="jogos">Jogos</option>
+                            <option value="sistema">Sistema</option>
+                            <option value="educacao">Educação</option>
+                            <option value="internet">Internet</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label class="filter-label">Ordenar por:</label>
+                        <select id="sort-filter" class="filter-select">
+                            <option value="relevancia">Relevância</option>
+                            <option value="nome">Nome A-Z</option>
+                            <option value="nome-desc">Nome Z-A</option>
+                            <option value="popularidade">Popularidade</option>
+                            <option value="data">Mais recentes</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Loading State -->
+        <div id="loading-state" class="loading-state" style="display: none;">
+            <div class="loading-spinner"></div>
+            <p class="loading-text">Buscando aplicativos...</p>
+        </div>
+
+        <!-- Search Results -->
+        <section id="search-results" class="search-results">
+            <div class="results-header" style="display: none;">
+                <h2 id="results-title" class="results-title">Resultados da pesquisa</h2>
+                <span id="results-count" class="results-count"></span>
+            </div>
+
+            <!-- Apps Grid -->
+            <div id="apps-grid" class="apps-grid">
+                <!-- Resultados serão inseridos aqui via JavaScript -->
+            </div>
+        </section>
+
+        <!-- Empty State -->
+        <div id="empty-state" class="empty-state" style="display: none;">
+            <div class="empty-icon">
+                <svg width="64" height="64" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+                </svg>
+            </div>
+            <h3 class="empty-title">Nenhum aplicativo encontrado</h3>
+            <p class="empty-message">Tente usar palavras-chave diferentes ou verificar a ortografia.</p>
+            <button id="clear-filters-btn" class="btn-secondary">Limpar filtros</button>
+        </div>
+
+        <!-- Initial State -->
+        <div id="initial-state" class="initial-state">
+            <div class="initial-content">
+                <div class="initial-icon">
+                    <svg width="80" height="80" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+                    </svg>
+                </div>
+                <h2 class="initial-title">Encontre seus aplicativos</h2>
+                <p class="initial-message">Use a barra de pesquisa acima para encontrar aplicativos por nome, categoria ou funcionalidade.</p>
+                
+                <div class="quick-categories">
+                    <h3 class="quick-categories-title">Categorias populares:</h3>
+                    <div class="category-tags">
+                        <button class="category-tag" data-category="produtividade">Produtividade</button>
+                        <button class="category-tag" data-category="desenvolvimento">Desenvolvimento</button>
+                        <button class="category-tag" data-category="multimidia">Multimídia</button>
+                        <button class="category-tag" data-category="jogos">Jogos</button>
+                        <button class="category-tag" data-category="sistema">Sistema</button>
+                        <button class="category-tag" data-category="educacao">Educação</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Template para cards de aplicativos -->
+    <template id="app-card-template">
+        <div class="app-card" tabindex="0">
+            <div class="app-icon">
+                <img src="" alt="" class="app-icon-img">
+                <div class="app-icon-fallback">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                    </svg>
+                </div>
+            </div>
+            <div class="app-info">
+                <h3 class="app-name"></h3>
+                <p class="app-description"></p>
+                <div class="app-meta">
+                    <span class="app-category"></span>
+                    <span class="app-rating">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                        </svg>
+                        <span class="rating-value"></span>
+                    </span>
+                </div>
+            </div>
+            <div class="app-actions">
+                <button class="btn-install">Instalar</button>
+                <button class="btn-icon app-more" aria-label="Mais opções">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </template>
+
+    <!-- Scripts -->
+    <script src="scripts/pesquisar.js"></script>
+</body>
+</html>

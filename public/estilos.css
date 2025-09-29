@@ -1,0 +1,297 @@
+/* estilos.css - Andistro Software Center
+   Responsivo, com variáveis de tema que podem se adaptar ao GTK
+*/
+
+/*
+  Estratégia de tema:
+  - Usa prefers-color-scheme para seguir claro/escuro automaticamente
+  - Suporta override via data-theme="light|dark" no <html> se necessário
+  - Variáveis de cor podem ser mapeadas por integração com GTK (ex.: via script que lê gsettings)
+*/
+
+:root {
+  /* Cores base (modo claro) */
+  --bg: #ffffff;
+  --bg-alt: #f5f6f7;
+  --panel: #f0f1f2;
+  --text: #1b1f23;
+  --muted: #5f6b7a;
+  --primary: #2e7dff;
+  --primary-contrast: #ffffff;
+  --border: #d0d7de;
+  --shadow: 0 1px 2px rgba(0,0,0,0.06), 0 4px 12px rgba(0,0,0,0.06);
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+
+  /* Estados */
+  --success: #2ea043;
+  --warning: #d29922;
+  --danger: #cf222e;
+
+  /* Elementos interativos */
+  --btn-bg: var(--primary);
+  --btn-fg: var(--primary-contrast);
+  --btn-hover: #1f6fe0;
+}
+
+/* Dark mode automático, imitando temas GTK escuros */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e1116;
+    --bg-alt: #11151b;
+    --panel: #161b22;
+    --text: #e6edf3;
+    --muted: #9aa7b2;
+    --primary: #4493f8;
+    --primary-contrast: #0e1116;
+    --border: #30363d;
+    --shadow: 0 1px 2px rgba(0,0,0,0.4), 0 6px 16px rgba(0,0,0,0.35);
+    --success: #3fb950;
+    --warning: #d2a23d;
+    --danger: #f85149;
+    --btn-bg: var(--primary);
+    --btn-fg: #0b0e14;
+    --btn-hover: #2f7de8;
+  }
+}
+
+/* Overrides opcionais por atributo data-theme */
+html[data-theme="light"] {
+  color-scheme: light;
+}
+html[data-theme="dark"] {
+  color-scheme: dark;
+}
+
+/* Reset e tipografia básica */
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Noto Sans", "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji";
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+img { max-width: 100%; height: auto; display: block; }
+a { color: var(--primary); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* Layout principal e Header */
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  backdrop-filter: saturate(140%) blur(6px);
+  background: color-mix(in srgb, var(--bg) 85%, transparent);
+  border-bottom: 1px solid var(--border);
+}
+.header-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 12px 16px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+}
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  font-size: 1.125rem;
+  color: var(--text);
+}
+.logo img { width: 28px; height: 28px; border-radius: 6px; }
+
+/* Botões genéricos */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  background: var(--btn-bg);
+  color: var(--btn-fg);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .2s ease, transform .05s ease, box-shadow .2s ease;
+}
+.btn:hover { background: var(--btn-hover); }
+.btn:active { transform: translateY(1px); }
+.btn.ghost {
+  background: transparent;
+  color: var(--text);
+  border-color: var(--border);
+}
+.btn.ghost:hover {
+  background: color-mix(in srgb, var(--text) 6%, transparent);
+}
+
+/* Conteúdo principal */
+.container {
+  max-width: 1200px;
+  margin: 16px auto;
+  padding: 0 16px 48px;
+}
+
+/* Grid de destaque / listagem de apps */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+@media (min-width: 480px) {
+  .grid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (min-width: 768px) {
+  .grid { grid-template-columns: repeat(4, 1fr); gap: 16px; }
+}
+@media (min-width: 1024px) {
+  .grid { grid-template-columns: repeat(6, 1fr); gap: 20px; }
+}
+
+/* Cards de aplicativos */
+.card {
+  display: flex;
+  flex-direction: column;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  min-width: 0;
+}
+.card:hover { transform: translateY(-2px); transition: transform .2s ease; }
+.card-media {
+  aspect-ratio: 16 / 9;
+  background: var(--bg-alt);
+  display: grid;
+  place-items: center;
+}
+.card-media img { width: 100%; height: 100%; object-fit: cover; }
+.card-body {
+  padding: 12px;
+  display: grid;
+  gap: 8px;
+}
+.card-title {
+  font-weight: 700;
+  font-size: 0.95rem;
+  line-height: 1.3;
+}
+.card-desc {
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+.card-actions {
+  margin-top: 4px;
+  display: flex;
+  gap: 8px;
+}
+
+/* Barra de progresso (downloads/updates) */
+.progress {
+  --progress-bg: var(--bg-alt);
+  --progress-fg: var(--primary);
+  width: 100%;
+  height: 10px;
+  background: var(--progress-bg);
+  border-radius: 999px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+.progress-bar {
+  height: 100%;
+  width: var(--value, 0%);
+  background: linear-gradient(90deg, var(--progress-fg), color-mix(in srgb, var(--progress-fg) 70%, var(--bg) 30%));
+  transition: width .25s ease;
+}
+
+/* Carrossel horizontal */
+.carousel {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 80%;
+  gap: 12px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  padding: 4px 4px 12px;
+}
+.carousel::-webkit-scrollbar { height: 10px; }
+.carousel::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--text) 20%, transparent);
+  border-radius: 999px;
+}
+.carousel > .card { scroll-snap-align: start; }
+@media (min-width: 480px) { .carousel { grid-auto-columns: 60%; } }
+@media (min-width: 768px) { .carousel { grid-auto-columns: 45%; } }
+@media (min-width: 1024px) { .carousel { grid-auto-columns: 32%; } }
+
+/* Seções de destaque */
+.section {
+  margin: 24px 0;
+}
+.section-title {
+  font-size: 1.125rem;
+  font-weight: 800;
+  margin: 0 0 12px 0;
+}
+
+/* Campos de busca e filtros */
+.input, input[type="text"], input[type="search"], select {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+}
+.input::placeholder, input::placeholder { color: var(--muted); }
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+/* Rodapé/footers leves */
+.footer {
+  margin-top: 32px;
+  padding: 16px;
+  color: var(--muted);
+  font-size: 0.875rem;
+  border-top: 1px solid var(--border);
+}
+
+/* Responsividade mínima 320px+ já coberta por estilos fluidos.
+   Ajustes finos adicionais: */
+@media (max-width: 359px) {
+  .header-inner { padding: 10px 12px; }
+  .logo { font-size: 1rem; }
+  .btn { padding: 9px 12px; }
+}
+
+/* Utilitários */
+.hidden { display: none !important; }
+.muted { color: var(--muted) !important; }
+.chips { display: flex; gap: 8px; flex-wrap: wrap; }
+.chip {
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--text) 7%, transparent);
+  color: var(--text);
+  font-size: 0.8rem;
+}
+
+/* Compatibilidade com prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}

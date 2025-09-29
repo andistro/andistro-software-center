@@ -1,0 +1,27 @@
+[
+  {
+    "nome": "Visual Studio Code",
+    "imagem": "vscode.png",
+    "comando": "apt install code"
+  },
+  {
+    "nome": "Brave Browser",
+    "imagem": "brave.png",
+    "comando": "apt install brave-browser"
+  },
+  {
+    "nome": "Firefox",
+    "imagem": "firefox.png",
+    "comando": "apt install firefox"
+  },
+  {
+    "nome": "GIMP",
+    "imagem": "gimp.png",
+    "comando": "apt install gimp"
+  },
+  {
+    "nome": "VLC Media Player",
+    "imagem": "vlc.png",
+    "comando": "apt install vlc"
+  }
+]

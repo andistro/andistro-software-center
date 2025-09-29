@@ -1,0 +1,129 @@
+[
+  {
+    "categoria": "Navegadores",
+    "apps": [
+      {
+        "nome": "Firefox",
+        "descricao": "Navegador web gratuito e de código aberto",
+        "imagem": "firefox.png",
+        "comando": "apt install firefox"
+      },
+      {
+        "nome": "Chromium",
+        "descricao": "Projeto de código aberto do Google Chrome",
+        "imagem": "chromium.png",
+        "comando": "apt install chromium-browser"
+      },
+      {
+        "nome": "Brave Browser",
+        "descricao": "Navegador focado em privacidade",
+        "imagem": "brave.png",
+        "comando": "apt install brave-browser"
+      }
+    ]
+  },
+  {
+    "categoria": "Desenvolvimento",
+    "apps": [
+      {
+        "nome": "Visual Studio Code",
+        "descricao": "Editor de código multiplataforma",
+        "imagem": "vscode.png",
+        "comando": "apt install code"
+      },
+      {
+        "nome": "Git",
+        "descricao": "Sistema de controle de versão",
+        "imagem": "git.png",
+        "comando": "apt install git"
+      },
+      {
+        "nome": "Node.js",
+        "descricao": "Runtime JavaScript",
+        "imagem": "nodejs.png",
+        "comando": "apt install nodejs npm"
+      },
+      {
+        "nome": "Python 3",
+        "descricao": "Linguagem de programação Python",
+        "imagem": "python.png",
+        "comando": "apt install python3 python3-pip"
+      }
+    ]
+  },
+  {
+    "categoria": "Multimídia",
+    "apps": [
+      {
+        "nome": "VLC Media Player",
+        "descricao": "Player de vídeo e áudio universal",
+        "imagem": "vlc.png",
+        "comando": "apt install vlc"
+      },
+      {
+        "nome": "GIMP",
+        "descricao": "Editor de imagens gratuito",
+        "imagem": "gimp.png",
+        "comando": "apt install gimp"
+      },
+      {
+        "nome": "Audacity",
+        "descricao": "Editor de áudio multiplataforma",
+        "imagem": "audacity.png",
+        "comando": "apt install audacity"
+      },
+      {
+        "nome": "OBS Studio",
+        "descricao": "Software de gravação e streaming",
+        "imagem": "obs.png",
+        "comando": "apt install obs-studio"
+      }
+    ]
+  },
+  {
+    "categoria": "Produtividade",
+    "apps": [
+      {
+        "nome": "LibreOffice",
+        "descricao": "Suite de escritório gratuita",
+        "imagem": "libreoffice.png",
+        "comando": "apt install libreoffice"
+      },
+      {
+        "nome": "Thunderbird",
+        "descricao": "Cliente de email",
+        "imagem": "thunderbird.png",
+        "comando": "apt install thunderbird"
+      },
+      {
+        "nome": "Discord",
+        "descricao": "Aplicativo de comunicação",
+        "imagem": "discord.png",
+        "comando": "snap install discord"
+      }
+    ]
+  },
+  {
+    "categoria": "Utilitários",
+    "apps": [
+      {
+        "nome": "GParted",
+        "descricao": "Editor de partições",
+        "imagem": "gparted.png",
+        "comando": "apt install gparted"
+      },
+      {
+        "nome": "Synaptic",
+        "descricao": "Gerenciador de pacotes gráfico",
+        "imagem": "synaptic.png",
+        "comando": "apt install synaptic"
+      },
+      {
+        "nome": "Flatpak",
+        "descricao": "Sistema de distribuição de aplicativos",
+        "imagem": "flatpak.png",
+        "comando": "apt install flatpak"
+      }
+    ]
+  }
+]
