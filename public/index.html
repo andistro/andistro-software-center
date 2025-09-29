@@ -1,125 +1,85 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Andistro Software Center</title>
-    <link rel="icon" type="image/svg+xml" href="assets/ic_store.svg">
-    <link rel="stylesheet" href="estilos.css">
-</head>
-<body>
-    <!-- Cabeçalho -->
-    <header class="header">
-        <div class="container">
-            <div class="logo-section">
-                <img src="assets/ic_logo.svg" alt="Andistro Logo" class="logo">
-                <h1>Software Center</h1>
-            </div>
-            <div class="search-section">
-                <div class="search-container">
-                    <input type="text" id="search-input" placeholder="Pesquisar aplicativos..." class="search-input">
-                    <button id="search-button" class="search-button">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
-                        </svg>
+        </div>
+                <!-- Updates and Uninstall Buttons Section -->
+                <div class="action-buttons-section" style="margin-top: 10px; text-align: right;">
+                    <!-- Updates Button -->
+                    <button class="updates-btn" id="updatesBtn" onclick="window.location.href='update-center.html'" style="background-color: #007bff; color: white; border: none; padding: 8px 16px; margin-right: 10px; border-radius: 4px; cursor: pointer;">
+                        🔄 Atualizações
+                    </button>
+                    
+                    <!-- Uninstall Button -->
+                    <button class="uninstall-btn" id="uninstallBtn" onclick="showUninstallCommand()" style="background-color: #dc3545; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;">
+                        🗑️ Desinstalar
                     </button>
                 </div>
             </div>
         </div>
     </header>
 
-    <!-- Conteúdo Principal -->
+    <script>
+        // URI Protocol Handler
+        if (window.location.protocol === 'andistro-software-center:') {
+            const path = window.location.href.replace('andistro-software-center://', '');
+            if (path === 'updates') {
+                window.location.href = 'update-center.html';
+            }
+        }
+        
+        // Handle custom URI from external calls
+        window.addEventListener('message', function(event) {
+            if (event.data && event.data.uri && event.data.uri.startsWith('andistro-software-center://')) {
+                const path = event.data.uri.replace('andistro-software-center://', '');
+                if (path === 'updates') {
+                    window.location.href = 'update-center.html';
+                }
+            }
+        });
+        
+        // Function to show uninstall command
+        function showUninstallCommand() {
+            const uninstallCmd = 'sudo rm -rf /opt/andistro-software-center && sudo rm /usr/local/bin/andistro-software-center && sudo rm /usr/share/applications/andistro-software-center.desktop';
+            
+            const modal = document.createElement('div');
+            modal.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: flex; align-items: center; justify-content: center; z-index: 1000;';
+            
+            const content = document.createElement('div');
+            content.style.cssText = 'background: white; padding: 20px; border-radius: 8px; max-width: 600px; margin: 20px;';
+            
+            content.innerHTML = `
+                <h3>Comando para Desinstalar</h3>
+                <p>Execute este comando no terminal para desinstalar completamente o Andistro Software Center:</p>
+                <div style="background: #f8f9fa; padding: 10px; border-radius: 4px; margin: 10px 0; font-family: monospace; word-break: break-all;">
+                    ${uninstallCmd}
+                </div>
+                <div style="text-align: right; margin-top: 15px;">
+                    <button onclick="navigator.clipboard.writeText('${uninstallCmd}').then(() => alert('Comando copiado!')); document.body.removeChild(this.closest('div').parentNode)" style="background: #28a745; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; margin-right: 10px;">Copiar</button>
+                    <button onclick="document.body.removeChild(this.closest('div').parentNode)" style="background: #6c757d; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;">Fechar</button>
+                </div>
+            `;
+            
+            modal.appendChild(content);
+            document.body.appendChild(modal);
+            
+            // Close on background click
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    document.body.removeChild(modal);
+                }
+            });
+        }
+    </script>
+
     <main class="main-content">
         <div class="container">
-            <!-- Seção de Destaques/Carrossel -->
+            <!-- Featured Section -->
             <section class="featured-section">
-                <h2>Aplicativos em Destaque</h2>
                 <div class="carousel-container">
-                    <div class="carousel" id="featured-carousel">
-                        <!-- Os destaques serão carregados dinamicamente pelo JavaScript -->
-                    </div>
                     <button class="carousel-btn carousel-prev" id="carousel-prev">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
                     </button>
                     <button class="carousel-btn carousel-next" id="carousel-next">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
                     </button>
-                </div>
-            </section>
-
-            <!-- Seção de Categorias -->
-            <section class="categories-section">
-                <div class="category-tabs">
-                    <button class="category-tab active" data-category="all">Todos</button>
-                    <button class="category-tab" data-category="development">Desenvolvimento</button>
-                    <button class="category-tab" data-category="internet">Internet</button>
-                    <button class="category-tab" data-category="multimedia">Multimídia</button>
-                    <button class="category-tab" data-category="office">Escritório</button>
-                    <button class="category-tab" data-category="games">Jogos</button>
-                    <button class="category-tab" data-category="system">Sistema</button>
-                </div>
-            </section>
-
-            <!-- Lista de Aplicativos -->
-            <section class="apps-section">
-                <div class="apps-grid" id="apps-grid">
-                    <!-- Os aplicativos serão carregados dinamicamente pelo JavaScript -->
-                </div>
-            </section>
-
-            <!-- Loading Indicator -->
-            <div class="loading" id="loading">
-                <div class="loading-spinner"></div>
-                <p>Carregando aplicativos...</p>
-            </div>
-
-            <!-- Mensagem de Nenhum Resultado -->
-            <div class="no-results" id="no-results" style="display: none;">
-                <svg width="64" height="64" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
-                </svg>
-                <h3>Nenhum aplicativo encontrado</h3>
-                <p>Tente ajustar sua pesquisa ou filtros</p>
-            </div>
-        </div>
-    </main>
-
-    <!-- Rodapé -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h4>Andistro Software Center</h4>
-                    <p>Descubra e instale os melhores aplicativos para sua distribuição Linux.</p>
-                </div>
-                <div class="footer-section">
-                    <h4>Links Úteis</h4>
-                    <ul>
-                        <li><a href="#">Documentação</a></li>
-                        <li><a href="#">Suporte</a></li>
-                        <li><a href="#">Contribuir</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h4>Comunidade</h4>
-                    <ul>
-                        <li><a href="#">GitHub</a></li>
-                        <li><a href="#">Discord</a></li>
-                        <li><a href="#">Fórum</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2024 Andistro Software Center. Todos os direitos reservados.</p>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Scripts -->
-    <script src="src/main.js"></script>
-</body>
-</html>
