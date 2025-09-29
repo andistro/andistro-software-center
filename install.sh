@@ -1,5 +1,4 @@
 #!/bin/bash
-
 # Andistro Software Center Installation Script
 # This script installs the Andistro Software Center and its dependencies
 
@@ -16,13 +15,14 @@ echo "Updating package list..."
 apt update
 
 # Install required packages if not already installed
+# Updated packages for better compatibility with Debian 13+ (Trixie) and Bookworm
 echo "Installing required packages..."
-REQUIRED_PACKAGES="python3-gi gir1.2-webkit2-4.0 gir1.2-gtk-3.0"
+REQUIRED_PACKAGES="python3-gi libwebkit2gtk-4.1-0 gir1.2-gtk-3.0"
 
 for package in $REQUIRED_PACKAGES; do
     if ! dpkg -l | grep -q "^ii.*$package"; then
         echo "Installing $package..."
-        apt install -y $package
+        sudo apt-get install --no-install-recommends -y $package
     else
         echo "$package is already installed"
     fi
