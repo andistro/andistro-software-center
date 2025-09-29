@@ -4,212 +4,122 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Andistro Software Center</title>
+    <link rel="icon" type="image/svg+xml" href="assets/ic_store.svg">
     <link rel="stylesheet" href="estilos.css">
 </head>
 <body>
-    <!-- Cabeçalho Principal -->
-    <header id="main-header">
-        <div class="header-container">
-            <div class="logo">
-                <h1>Andistro Software Center</h1>
+    <!-- Cabeçalho -->
+    <header class="header">
+        <div class="container">
+            <div class="logo-section">
+                <img src="assets/ic_logo.svg" alt="Andistro Logo" class="logo">
+                <h1>Software Center</h1>
             </div>
-            <nav id="main-nav">
-                <ul>
-                    <li><a href="#home">Início</a></li>
-                    <li><a href="#categories">Categorias</a></li>
-                    <li><a href="#installed">Instalados</a></li>
-                    <li><a href="#updates">Atualizações</a></li>
-                </ul>
-            </nav>
+            <div class="search-section">
+                <div class="search-container">
+                    <input type="text" id="search-input" placeholder="Pesquisar aplicativos..." class="search-input">
+                    <button id="search-button" class="search-button">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
         </div>
     </header>
 
-    <!-- Barra de Pesquisa -->
-    <section id="search-section">
-        <div class="search-container">
-            <div class="search-box">
-                <input type="text" id="search-input" placeholder="Pesquisar aplicativos...">
-                <button id="search-btn" type="button">
-                    <span>🔍</span>
-                </button>
+    <!-- Conteúdo Principal -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Seção de Destaques/Carrossel -->
+            <section class="featured-section">
+                <h2>Aplicativos em Destaque</h2>
+                <div class="carousel-container">
+                    <div class="carousel" id="featured-carousel">
+                        <!-- Os destaques serão carregados dinamicamente pelo JavaScript -->
+                    </div>
+                    <button class="carousel-btn carousel-prev" id="carousel-prev">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+                        </svg>
+                    </button>
+                    <button class="carousel-btn carousel-next" id="carousel-next">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
+                        </svg>
+                    </button>
+                </div>
+            </section>
+
+            <!-- Seção de Categorias -->
+            <section class="categories-section">
+                <div class="category-tabs">
+                    <button class="category-tab active" data-category="all">Todos</button>
+                    <button class="category-tab" data-category="development">Desenvolvimento</button>
+                    <button class="category-tab" data-category="internet">Internet</button>
+                    <button class="category-tab" data-category="multimedia">Multimídia</button>
+                    <button class="category-tab" data-category="office">Escritório</button>
+                    <button class="category-tab" data-category="games">Jogos</button>
+                    <button class="category-tab" data-category="system">Sistema</button>
+                </div>
+            </section>
+
+            <!-- Lista de Aplicativos -->
+            <section class="apps-section">
+                <div class="apps-grid" id="apps-grid">
+                    <!-- Os aplicativos serão carregados dinamicamente pelo JavaScript -->
+                </div>
+            </section>
+
+            <!-- Loading Indicator -->
+            <div class="loading" id="loading">
+                <div class="loading-spinner"></div>
+                <p>Carregando aplicativos...</p>
             </div>
-            <div class="filter-buttons">
-                <button id="filter-all" class="filter-btn active">Todos</button>
-                <button id="filter-free" class="filter-btn">Gratuitos</button>
-                <button id="filter-popular" class="filter-btn">Populares</button>
-                <button id="filter-recent" class="filter-btn">Recentes</button>
+
+            <!-- Mensagem de Nenhum Resultado -->
+            <div class="no-results" id="no-results" style="display: none;">
+                <svg width="64" height="64" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+                </svg>
+                <h3>Nenhum aplicativo encontrado</h3>
+                <p>Tente ajustar sua pesquisa ou filtros</p>
             </div>
         </div>
-    </section>
-
-    <main id="main-content">
-        <!-- Seção de Destaques (Carrossel) -->
-        <section id="highlights-section">
-            <h2>Aplicativos em Destaque</h2>
-            <div id="carousel-container">
-                <button id="carousel-prev" class="carousel-btn prev">‹</button>
-                <div id="carousel-wrapper">
-                    <div id="carousel-track">
-                        <!-- Item 1 -->
-                        <div class="carousel-item active" data-app="featured-1">
-                            <img src="#" alt="App Destaque 1" class="app-image">
-                            <div class="item-info">
-                                <h3>Firefox</h3>
-                                <p>Navegador web rápido e seguro</p>
-                                <button class="install-btn" data-app-id="firefox">Instalar</button>
-                            </div>
-                        </div>
-                        <!-- Item 2 -->
-                        <div class="carousel-item" data-app="featured-2">
-                            <img src="#" alt="App Destaque 2" class="app-image">
-                            <div class="item-info">
-                                <h3>LibreOffice</h3>
-                                <p>Suíte de escritório completa</p>
-                                <button class="install-btn" data-app-id="libreoffice">Instalar</button>
-                            </div>
-                        </div>
-                        <!-- Item 3 -->
-                        <div class="carousel-item" data-app="featured-3">
-                            <img src="#" alt="App Destaque 3" class="app-image">
-                            <div class="item-info">
-                                <h3>GIMP</h3>
-                                <p>Editor de imagens profissional</p>
-                                <button class="install-btn" data-app-id="gimp">Instalar</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <button id="carousel-next" class="carousel-btn next">›</button>
-                <div id="carousel-indicators">
-                    <span class="indicator active" data-slide="0"></span>
-                    <span class="indicator" data-slide="1"></span>
-                    <span class="indicator" data-slide="2"></span>
-                </div>
-            </div>
-        </section>
-
-        <!-- Lista de Aplicativos -->
-        <section id="apps-section">
-            <h2>Todos os Aplicativos</h2>
-            
-            <!-- Controles de Ordenação -->
-            <div id="sort-controls">
-                <label for="sort-select">Ordenar por:</label>
-                <select id="sort-select">
-                    <option value="name">Nome</option>
-                    <option value="popularity">Popularidade</option>
-                    <option value="rating">Avaliação</option>
-                    <option value="date">Data</option>
-                </select>
-            </div>
-
-            <!-- Grid de Aplicativos -->
-            <div id="apps-grid">
-                <!-- App 1 -->
-                <div class="app-card" data-category="internet" data-rating="4.5">
-                    <img src="#" alt="Chrome" class="app-icon">
-                    <div class="app-info">
-                        <h3 class="app-name">Google Chrome</h3>
-                        <p class="app-description">Navegador web rápido e seguro</p>
-                        <div class="app-meta">
-                            <span class="app-category">Internet</span>
-                            <span class="app-rating">★★★★☆ 4.5</span>
-                        </div>
-                        <button class="install-btn" data-app-id="chrome">Instalar</button>
-                    </div>
-                </div>
-
-                <!-- App 2 -->
-                <div class="app-card" data-category="office" data-rating="4.8">
-                    <img src="#" alt="LibreOffice" class="app-icon">
-                    <div class="app-info">
-                        <h3 class="app-name">LibreOffice</h3>
-                        <p class="app-description">Suíte completa de escritório</p>
-                        <div class="app-meta">
-                            <span class="app-category">Escritório</span>
-                            <span class="app-rating">★★★★★ 4.8</span>
-                        </div>
-                        <button class="install-btn" data-app-id="libreoffice">Instalar</button>
-                    </div>
-                </div>
-
-                <!-- App 3 -->
-                <div class="app-card" data-category="graphics" data-rating="4.6">
-                    <img src="#" alt="GIMP" class="app-icon">
-                    <div class="app-info">
-                        <h3 class="app-name">GIMP</h3>
-                        <p class="app-description">Editor de imagens profissional</p>
-                        <div class="app-meta">
-                            <span class="app-category">Gráficos</span>
-                            <span class="app-rating">★★★★★ 4.6</span>
-                        </div>
-                        <button class="install-btn" data-app-id="gimp">Instalar</button>
-                    </div>
-                </div>
-
-                <!-- App 4 -->
-                <div class="app-card" data-category="development" data-rating="4.7">
-                    <img src="#" alt="VS Code" class="app-icon">
-                    <div class="app-info">
-                        <h3 class="app-name">Visual Studio Code</h3>
-                        <p class="app-description">Editor de código moderno</p>
-                        <div class="app-meta">
-                            <span class="app-category">Desenvolvimento</span>
-                            <span class="app-rating">★★★★★ 4.7</span>
-                        </div>
-                        <button class="install-btn" data-app-id="vscode">Instalar</button>
-                    </div>
-                </div>
-
-                <!-- App 5 -->
-                <div class="app-card" data-category="media" data-rating="4.4">
-                    <img src="#" alt="VLC" class="app-icon">
-                    <div class="app-info">
-                        <h3 class="app-name">VLC Media Player</h3>
-                        <p class="app-description">Reprodutor multimídia universal</p>
-                        <div class="app-meta">
-                            <span class="app-category">Multimídia</span>
-                            <span class="app-rating">★★★★☆ 4.4</span>
-                        </div>
-                        <button class="install-btn" data-app-id="vlc">Instalar</button>
-                    </div>
-                </div>
-
-                <!-- App 6 -->
-                <div class="app-card" data-category="internet" data-rating="4.3">
-                    <img src="#" alt="Thunderbird" class="app-icon">
-                    <div class="app-info">
-                        <h3 class="app-name">Thunderbird</h3>
-                        <p class="app-description">Cliente de email completo</p>
-                        <div class="app-meta">
-                            <span class="app-category">Internet</span>
-                            <span class="app-rating">★★★★☆ 4.3</span>
-                        </div>
-                        <button class="install-btn" data-app-id="thunderbird">Instalar</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Botão Carregar Mais -->
-            <div id="load-more-container">
-                <button id="load-more-btn">Carregar Mais Aplicativos</button>
-            </div>
-        </section>
     </main>
 
     <!-- Rodapé -->
-    <footer id="main-footer">
-        <div class="footer-content">
-            <p>&copy; 2024 Andistro Software Center. Todos os direitos reservados.</p>
-            <div class="footer-links">
-                <a href="#about">Sobre</a>
-                <a href="#help">Ajuda</a>
-                <a href="#contact">Contato</a>
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Andistro Software Center</h4>
+                    <p>Descubra e instale os melhores aplicativos para sua distribuição Linux.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Links Úteis</h4>
+                    <ul>
+                        <li><a href="#">Documentação</a></li>
+                        <li><a href="#">Suporte</a></li>
+                        <li><a href="#">Contribuir</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Comunidade</h4>
+                    <ul>
+                        <li><a href="#">GitHub</a></li>
+                        <li><a href="#">Discord</a></li>
+                        <li><a href="#">Fórum</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Andistro Software Center. Todos os direitos reservados.</p>
             </div>
         </div>
     </footer>
 
-    <!-- Scripts JS -->
-    <script src="app.js"></script>
+    <!-- Scripts -->
+    <script src="src/main.js"></script>
 </body>
 </html>

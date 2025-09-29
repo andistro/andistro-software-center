@@ -1,27 +1,68 @@
-[
-  {
-    "nome": "Visual Studio Code",
-    "imagem": "vscode.png",
-    "comando": "apt install code"
-  },
-  {
-    "nome": "Brave Browser",
-    "imagem": "brave.png",
-    "comando": "apt install brave-browser"
-  },
-  {
-    "nome": "Firefox",
-    "imagem": "firefox.png",
-    "comando": "apt install firefox"
-  },
-  {
-    "nome": "GIMP",
-    "imagem": "gimp.png",
-    "comando": "apt install gimp"
-  },
-  {
-    "nome": "VLC Media Player",
-    "imagem": "vlc.png",
-    "comando": "apt install vlc"
-  }
-]
+{
+  "destaques": [
+    {
+      "id": "brave-browser",
+      "nome": {
+        "default": "Brave Browser",
+        "pt-BR": "Navegador Brave"
+      },
+      "descricao": {
+        "default": "Fast, secure browser with built-in privacy protection and ad blocking",
+        "pt-BR": "Navegador rápido e seguro com proteção de privacidade e bloqueador de anúncios integrados"
+      },
+      "banner": {
+        "default": "assets/banner/brave-browser.png",
+        "pt-BR": "assets/banner/brave-browser-pt-BR.png"
+      },
+      "icone": "assets/icon/brave.svg",
+      "categoria": "navegadores",
+      "destaque": true,
+      "novo": false,
+      "pacote": "brave-browser",
+      "site": "https://brave.com",
+      "classificacao": 4.5
+    },
+    {
+      "id": "vscode",
+      "nome": {
+        "default": "Visual Studio Code",
+        "pt-BR": "Visual Studio Code"
+      },
+      "descricao": {
+        "default": "Lightweight but powerful source code editor",
+        "pt-BR": "Editor de código-fonte leve mas poderoso"
+      },
+      "banner": {
+        "default": "assets/banner/code.png"
+      },
+      "icone": "assets/icon/vscode.svg",
+      "categoria": "desenvolvimento",
+      "destaque": true,
+      "novo": false,
+      "pacote": "code",
+      "site": "https://code.visualstudio.com",
+      "classificacao": 4.8
+    },
+    {
+      "id": "vivaldi",
+      "nome": {
+        "default": "Vivaldi Browser",
+        "pt-BR": "Navegador Vivaldi"
+      },
+      "descricao": {
+        "default": "Highly customizable web browser with unique features",
+        "pt-BR": "Navegador web altamente personalizável com recursos únicos"
+      },
+      "banner": {
+        "default": "assets/banner/vivaldi.png"
+      },
+      "icone": "assets/icon/vivaldi.svg",
+      "categoria": "navegadores",
+      "destaque": true,
+      "novo": true,
+      "pacote": "vivaldi-stable",
+      "site": "https://vivaldi.com",
+      "classificacao": 4.3
+    }
+  ]
+}

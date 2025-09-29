@@ -1,110 +1,167 @@
-// AndDistro Software Center
-// Funções para carregar dados remotamente via fetch
+// Detectar idioma do sistema
+function getSystemLanguage() {
+    const language = navigator.language || navigator.languages[0] || 'en';
+    // Extrair código da linguagem (ex: pt-BR -> pt-BR, pt -> pt, en-US -> en-US)
+    return language;
+}
 
-// URLs dos arquivos JSON remotos no GitHub
-const REMOTE_URLS = {
-    destaques: 'https://raw.githubusercontent.com/andistro/andistro-software-center/main/public/destaques.json',
-    apps: 'https://raw.githubusercontent.com/andistro/andistro-software-center/main/public/apps.json'
-};
+// Função para obter conteúdo localizado
+function getLocalizedContent(item, property, fallback = null) {
+    const language = getSystemLanguage();
+    const languageCode = language.split('-')[0]; // pt-BR -> pt, en-US -> en
+    
+    // Tentar idioma completo primeiro (ex: pt-BR)
+    if (item[property + '_' + language]) {
+        return item[property + '_' + language];
+    }
+    
+    // Tentar apenas código do idioma (ex: pt)
+    if (item[property + '_' + languageCode]) {
+        return item[property + '_' + languageCode];
+    }
+    
+    // Usar versão global como fallback
+    return item[property] || fallback;
+}
 
-// Cache para dados carregados
-let cachedData = {
-    destaques: null,
-    apps: null
-};
+// Função para obter banner localizado
+function getLocalizedBanner(item) {
+    const language = getSystemLanguage();
+    const languageCode = language.split('-')[0];
+    
+    // Construir possíveis nomes de arquivo
+    const possibleBanners = [
+        item.banner ? item.banner.replace('.png', `-${language}.png`).replace('.jpg', `-${language}.jpg`) : null,
+        item.banner ? item.banner.replace('.png', `-${languageCode}.png`).replace('.jpg', `-${languageCode}.jpg`) : null,
+        item.banner // fallback para versão global
+    ].filter(Boolean);
+    
+    // Por enquanto, retornar o primeiro disponível (pode ser melhorado para verificar se existe)
+    // Para pt-BR, tentará: banner-pt-BR.png, banner-pt.png, banner.png
+    return possibleBanners[0] || item.banner;
+}
 
-// Função para carregar dados com fallback
 async function loadJSONData(type) {
     try {
-        // Primeiro, tenta carregar do GitHub
-        const response = await fetch(REMOTE_URLS[type]);
-        
-        if (response.ok) {
-            const data = await response.json();
-            cachedData[type] = data;
-            console.log(`Dados de ${type} carregados do GitHub com sucesso`);
-            return data;
+        const response = await fetch(type + '.json');
+        if (!response.ok) {
+            throw new Error('Falha ao carregar ' + type + '.json');
         }
-        
-        throw new Error(`Erro HTTP: ${response.status}`);
-        
+        const data = await response.json();
+        return data;
     } catch (error) {
-        console.warn(`Erro ao carregar ${type} do GitHub:`, error);
-        
-        // Fallback: tenta carregar do arquivo local
-        try {
-            const localResponse = await fetch(`../${type}.json`);
-            if (localResponse.ok) {
-                const data = await localResponse.json();
-                cachedData[type] = data;
-                console.log(`Dados de ${type} carregados localmente como fallback`);
-                return data;
-            }
-        } catch (localError) {
-            console.error(`Erro ao carregar ${type} localmente:`, localError);
-        }
-        
-        // Se tudo falhar, retorna dados vazios
-        console.error(`Não foi possível carregar dados de ${type}`);
-        return type === 'destaques' ? [] : [];
+        console.error('Erro ao carregar JSON:', error);
+        return null;
     }
 }
 
-// Função para carregar destaques
+// Função para renderizar destaques com suporte a idiomas
+function renderDestaques(destaques) {
+    const container = document.getElementById('destaques-container');
+    if (!container) return;
+    
+    container.innerHTML = '';
+    
+    destaques.forEach(destaque => {
+        const div = document.createElement('div');
+        div.className = 'destaque-item';
+        
+        // Obter banner localizado
+        const bannerSrc = getLocalizedBanner(destaque);
+        
+        // Obter título e descrição localizados
+        const titulo = getLocalizedContent(destaque, 'title', destaque.title);
+        const descricao = getLocalizedContent(destaque, 'description', destaque.description);
+        const linkText = getLocalizedContent(destaque, 'link_text', 'Saiba mais');
+        
+        div.innerHTML = `
+            <div class="banner">
+                <img src="${bannerSrc}" alt="${titulo}" onerror="this.src='${destaque.banner}'">
+            </div>
+            <div class="content">
+                <h3>${titulo}</h3>
+                <p>${descricao}</p>
+                <a href="${destaque.link}" class="btn-destaque">${linkText}</a>
+            </div>
+        `;
+        
+        container.appendChild(div);
+    });
+}
+
+// Função principal para carregar e renderizar destaques
 async function loadDestaques() {
-    if (cachedData.destaques) {
-        return cachedData.destaques;
+    const data = await loadJSONData('destaques');
+    if (data && data.destaques) {
+        renderDestaques(data.destaques);
     }
-    return await loadJSONData('destaques');
 }
 
-// Função para carregar apps
+// Função para renderizar aplicativos
+function renderApps(apps) {
+    const container = document.getElementById('apps-container');
+    if (!container) return;
+    
+    container.innerHTML = '';
+    
+    apps.forEach(app => {
+        const div = document.createElement('div');
+        div.className = 'app-item';
+        
+        // Obter nome e descrição localizados
+        const nome = getLocalizedContent(app, 'name', app.name);
+        const descricao = getLocalizedContent(app, 'description', app.description);
+        
+        // Usar ícone se disponível
+        const iconSrc = app.icon || 'assets/icon/default.svg';
+        
+        div.innerHTML = `
+            <div class="icon">
+                <img src="${iconSrc}" alt="${nome}" onerror="this.src='assets/icon/default.svg'">
+            </div>
+            <div class="info">
+                <h4>${nome}</h4>
+                <p>${descricao}</p>
+                <button onclick="installApp('${app.package}')" class="btn-install">Instalar</button>
+            </div>
+        `;
+        
+        container.appendChild(div);
+    });
+}
+
+// Função para carregar e renderizar apps
 async function loadApps() {
-    if (cachedData.apps) {
-        return cachedData.apps;
-    }
-    return await loadJSONData('apps');
-}
-
-// Função de inicialização que carrega todos os dados
-async function initializeData() {
-    try {
-        console.log('Inicializando carregamento de dados...');
-        
-        // Carrega ambos os arquivos simultaneamente
-        const [destaques, apps] = await Promise.all([
-            loadDestaques(),
-            loadApps()
-        ]);
-        
-        console.log('Todos os dados foram carregados com sucesso');
-        return { destaques, apps };
-        
-    } catch (error) {
-        console.error('Erro durante inicialização dos dados:', error);
-        return { destaques: [], apps: [] };
+    const data = await loadJSONData('apps');
+    if (data && data.apps) {
+        renderApps(data.apps);
     }
 }
 
-// Exporta as funções para uso em outros módulos
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = {
-        loadDestaques,
-        loadApps,
-        initializeData
-    };
+// Função para instalar aplicativo
+function installApp(packageName) {
+    // Implementar lógica de instalação
+    console.log('Instalando:', packageName);
+    alert('Funcionalidade de instalação será implementada em breve.');
 }
 
-// Para uso no browser, adiciona as funções ao window
-if (typeof window !== 'undefined') {
-    window.loadDestaques = loadDestaques;
-    window.loadApps = loadApps;
-    window.initializeData = initializeData;
+// Inicializar quando o DOM estiver pronto
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('Idioma do sistema detectado:', getSystemLanguage());
+    loadDestaques();
+    loadApps();
+});
+
+// Função para buscar aplicativos
+function searchApps(query) {
+    // Implementar busca
+    console.log('Buscando:', query);
 }
 
-// Auto-inicialização quando a página carregar
-if (typeof document !== 'undefined') {
-    document.addEventListener('DOMContentLoaded', async () => {
-        await initializeData();
+// Configurar busca
+const searchInput = document.getElementById('search-input');
+if (searchInput) {
+    searchInput.addEventListener('input', function(e) {
+        searchApps(e.target.value);
     });
 }
